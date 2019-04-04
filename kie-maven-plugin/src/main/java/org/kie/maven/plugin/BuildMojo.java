@@ -101,6 +101,8 @@ public class BuildMojo extends AbstractKieMojo {
     @Parameter(required = false, defaultValue = "no")
     private String usesPMML;
 
+    @Parameter(required = true, defaultValue = "${project.basedir}")
+    private File projectFolder;
 
 
     /**
@@ -160,12 +162,12 @@ public class BuildMojo extends AbstractKieMojo {
 
             KieFileSystem kfs = ks.newKieFileSystem();
             for (File file : getResourceFiles(sourceFolder)) {
-                if (!file.getPath().contains("META-INF")) {
+                //if (!file.getPath().contains("META-INF")) {
                     kfs.write( ResourceFactory.newFileResource(file) );
-                }
+                //}
             }
 
-            KieBuilderImpl kieBuilder = new KieBuilderImpl(kfs);
+            KieBuilderImpl kieBuilder = new KieBuilderImpl(projectFolder);
             InternalKieModule kModule = (InternalKieModule)kieBuilder.getKieModule();
             for (InternalKieModule kmoduleDep : kmoduleDeps) {
                 kModule.addKieDependency(kmoduleDep);
